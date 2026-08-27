@@ -3,7 +3,7 @@
 ## Machine-verifiable
 - [x] Public code repository
 - [x] Public live URL
-- [x] OSS license file present
+- [x] OSS license file present and GitHub recognizes SPDX `MIT`
 - [x] Current runtime uses `document.modelContext`
 - [x] Structured tools operate on one shared project state
 - [x] Visible doodle preview
@@ -14,9 +14,9 @@
 - [x] `SUBMISSION.md`
 - [x] `DEMO_SCRIPT.md`
 - [x] Node regression test
-- [ ] Live deployment bytes rechecked after final commit
-- [ ] WebMCP-capable browser: `document.modelContext.getTools()` verified on live deployment
-- [ ] Human→agent→human live shared-edit evidence recorded in Issue #1
+- [x] Vercel production deployment is READY and live `app.js` bytes were rechecked after the implementation commit
+- [x] Human→agent→human shared-edit E2E executed against the exact committed implementation with a `document.modelContext` contract shim; evidence recorded in Issue #1
+- [ ] Native WebMCP-capable Chrome 150+: `document.modelContext.getTools()` verified on the live URL (current independent verifier only has Chromium 144, so this must not be falsely marked complete)
 
 ## Human gate — only after machine acceptance is green
 - [ ] Confirm entrant eligibility and accept current Official Rules in Devpost
@@ -29,4 +29,4 @@
 After the submission deadline, do not modify the submitted build/repository in a way that changes the judged entry unless the rules explicitly permit it.
 
 ## Kill condition
-If current WebMCP tool discovery and one visible shared-state mutation cannot be demonstrated on the live public URL without new spend, do not paper over it with screenshots or claims; fix the implementation before submission.
+If native current WebMCP tool discovery and one visible shared-state mutation cannot be demonstrated on the live public URL without new spend, do not paper over it with screenshots or claims; fix the implementation before submission.
