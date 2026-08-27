@@ -1,14 +1,32 @@
-# WebMCP Challenge checklist
+# OpenAI WebMCP Challenge checklist
 
-- [x] Working public live URL: https://ai-akari-webmcp-mv-atelier.vercel.app
-- [x] Public source repository: https://github.com/AInoAKARI/ai-akari-webmcp-mv-atelier
-- [x] Complete MIT license
-- [x] `document.modelContext` runtime API and tool list
-- [x] Real local doodle preview and image-derived analysis
-- [x] Human/agent shared project state and persistence
-- [x] Truthful prompt-only fallback, no credential or spend requirement
-- [x] Submission draft: `SUBMISSION.md`
-- [x] Under-three-minute demo script: `DEMO_SCRIPT.md`
-- [ ] Public YouTube demo URL (human records/publishes)
-- [ ] Devpost participant registration, rules agreement and final Submit (human gate)
-- [ ] Freeze submission after the 2026-09-03 13:00 PDT deadline
+## Machine-verifiable
+- [x] Public code repository
+- [x] Public live URL
+- [x] OSS license file present
+- [x] Current runtime uses `document.modelContext`
+- [x] Structured tools operate on one shared project state
+- [x] Visible doodle preview
+- [x] Real local pixel analysis: palette / brightness / contrast / orientation / tone / movement
+- [x] Agent-supplied mood/title are not overwritten by human DOM values
+- [x] Reorder rebuilds coherent timecodes
+- [x] Zero-spend / no-new-ENV / no-secret judge path
+- [x] `SUBMISSION.md`
+- [x] `DEMO_SCRIPT.md`
+- [x] Node regression test
+- [ ] Live deployment bytes rechecked after final commit
+- [ ] WebMCP-capable browser: `document.modelContext.getTools()` verified on live deployment
+- [ ] Human→agent→human live shared-edit evidence recorded in Issue #1
+
+## Human gate — only after machine acceptance is green
+- [ ] Confirm entrant eligibility and accept current Official Rules in Devpost
+- [ ] Record demo under 3 minutes
+- [ ] Publish demo publicly on YouTube
+- [ ] Paste final submission wording / URLs into Devpost
+- [ ] Final Submit before the official deadline
+
+## Freeze rule
+After the submission deadline, do not modify the submitted build/repository in a way that changes the judged entry unless the rules explicitly permit it.
+
+## Kill condition
+If current WebMCP tool discovery and one visible shared-state mutation cannot be demonstrated on the live public URL without new spend, do not paper over it with screenshots or claims; fix the implementation before submission.

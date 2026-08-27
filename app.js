@@ -1,22 +1,296 @@
-const KEY='akari-webmcp-mv-project-v1';let project=JSON.parse(localStorage.getItem(KEY)||'null');
-const $=id=>document.getElementById(id);const persist=()=>{localStorage.setItem(KEY,JSON.stringify(project));render()};
-const readDataUrl=file=>new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(String(r.result));r.onerror=()=>reject(r.error);r.readAsDataURL(file)});
-const hex=(r,g,b)=>`#${[r,g,b].map(v=>Math.max(0,Math.min(255,v)).toString(16).padStart(2,'0')).join('')}`;
-async function analyzeImage(file){const original=await readDataUrl(file),img=new Image();img.src=original;await new Promise((res,rej)=>{img.onload=res;img.onerror=()=>rej(new Error('image_load_failed'))});const max=960,scale=Math.min(1,max/Math.max(img.naturalWidth,img.naturalHeight)),width=Math.max(1,Math.round(img.naturalWidth*scale)),height=Math.max(1,Math.round(img.naturalHeight*scale)),canvas=document.createElement('canvas');canvas.width=width;canvas.height=height;const ctx=canvas.getContext('2d',{willReadFrequently:true});if(!ctx)throw new Error('canvas_unavailable');ctx.fillStyle='#fff';ctx.fillRect(0,0,width,height);ctx.drawImage(img,0,0,width,height);const pixels=ctx.getImageData(0,0,width,height).data,buckets=new Map(),lums=[],stride=Math.max(4,Math.floor(Math.sqrt(width*height/12000)))*4;for(let i=0;i<pixels.length;i+=stride){const a=pixels[i+3];if(a<32)continue;const r=pixels[i],g=pixels[i+1],b=pixels[i+2],lum=.2126*r+.7152*g+.0722*b;lums.push(lum);if(lum>245)continue;const key=hex(Math.round(r/51)*51,Math.round(g/51)*51,Math.round(b/51)*51);buckets.set(key,(buckets.get(key)||0)+1)}const avg=lums.length?lums.reduce((a,b)=>a+b,0)/lums.length:128,variance=lums.length?lums.reduce((s,v)=>s+(v-avg)**2,0)/lums.length:0,brightness=Math.round(avg/255*100),contrast=Math.min(100,Math.round(Math.sqrt(variance)/96*100)),palette=[...buckets.entries()].sort((a,b)=>b[1]-a[1]).slice(0,5).map(([c])=>c),ratio=width/height,orientation=ratio>1.12?'landscape':ratio<.88?'portrait':'square';return{dataUrl:canvas.toDataURL('image/jpeg',.84),analysis:{palette:palette.length?palette:['#d9d9d9','#7c7c7c','#232323'],brightness,contrast,orientation,motif:'the main motif in the uploaded doodle; preserve its original outline and imperfect hand-drawn identity',movement:orientation==='portrait'?'vertical rise and close subject movement':orientation==='landscape'?'sideways parallax and cinematic camera travel':'centered expansion and orbit',emotionalTone:brightness<38?'dark, intimate and mysterious':brightness>72?'bright, fragile and hopeful':contrast>52?'graphic and energetic':'soft and nostalgic'}}}
-function makePlan(mood=project.mood,title=project.title){project.title=title||project.title;project.mood=mood||project.mood;project.shots=[0,5,10].map((start,i)=>({id:`shot-${i+1}`,start,end:start+5,action:[`The doodle wakes in a ${project.mood} room`,`Camera follows its changing silhouette`,`A soft return to the first line`][i],prompt:`15s MV, ${project.mood} mood, ${project.analysis.orientation} doodle, palette ${project.analysis.palette.join(', ')}, shot ${i+1}`}));project.updatedAt=new Date().toISOString();persist();return project}
-function render(){ $('projectTitle').textContent=project?project.title:'No project yet';$('analysis').textContent=project?`Doodle: ${project.fileName} · ${project.analysis.orientation} · ${project.analysis.emotionalTone}`:'Upload a doodle to begin.';$('shots').innerHTML=project?project.shots.map(s=>`<article class="shot"><b>${s.id} · ${s.start}–${s.end}s</b><br>${s.action}<br><small>${s.prompt}</small></article>`).join(''):'';if(project?.dataUrl){$('preview').src=project.dataUrl;$('preview').hidden=false;$('metrics').hidden=false;$('metrics').innerHTML=`<span>palette ${project.analysis.palette.join(' ')}</span><span>brightness ${project.analysis.brightness}%</span><span>contrast ${project.analysis.contrast}%</span><span>${project.analysis.orientation}</span>`}}
-$('file').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const result=await analyzeImage(f);project={id:crypto.randomUUID(),fileName:f.name,createdAt:new Date().toISOString(),updatedAt:new Date().toISOString(),mood:$('mood').value,title:$('title').value||'Doodle MV',shots:[],...result};$('fileLabel').textContent=f.name;persist();$('status').textContent='Real local image analysis complete. Create a shared plan.'}catch(err){$('status').textContent=`analysis_failed: ${err.message}`}};
-$('create').onclick=()=>{if(project)makePlan($('mood').value,$('title').value)};$('save').onclick=()=>{if(project){persist();$('status').textContent='Saved to shared local project.'}};$('prepare').onclick=()=>{if(project)$('status').textContent='prompt_ready · no provider credential/executor verified · no fake video claimed'};
-function reorder(ids){if(!project||ids.length!==project.shots.length||new Set(ids).size!==ids.length)return false;const map=new Map(project.shots.map(s=>[s.id,s]));project.shots=ids.map(id=>map.get(id)).filter(Boolean).map((s,i)=>({...s,start:i*5,end:i*5+5}));project.updatedAt=new Date().toISOString();persist();return true}
-function register(){const mc=document.modelContext;if(!mc||window.__akariToolsRegistered)return;window.__akariToolsRegistered=true;const schema=(properties,required=[])=>({type:'object',properties,required,additionalProperties:false}),current=()=>project,write=p=>{project=p;persist();return{ok:true,project:p}},tools=[
-{name:'read_current_mv_project',title:'Read current MV project',description:'Read the exact project humans see.',inputSchema:schema({}),execute:()=>current()?{ok:true,project:current()}:{ok:false,reason:'no_mv_project'}},
-{name:'analyze_current_doodle',title:'Analyze current doodle',description:'Return image-derived palette, brightness, contrast, orientation and motion.',inputSchema:schema({}),execute:()=>current()?{ok:true,fileName:current().fileName,analysis:current().analysis}:{ok:false,reason:'no_mv_project'}},
-{name:'create_mv_plan',title:'Create MV plan',description:'Create a shared storyboard using the supplied mood.',inputSchema:schema({mood:{type:'string'},title:{type:'string'}}),execute:i=>current()?{ok:true,project:makePlan(i.mood||current().mood,i.title||current().title)}:{ok:false,reason:'no_mv_project'}},
-{name:'set_mood',title:'Set mood',description:'Change mood in shared state without reading the human select.',inputSchema:schema({mood:{type:'string'}},['mood']),execute:i=>current()?{ok:true,project:makePlan(String(i.mood),current().title)}:{ok:false,reason:'no_mv_project'}},
-{name:'propose_shot',title:'Propose a shot',description:'Read one shared shot.',inputSchema:schema({shotId:{type:'string'}}),execute:i=>{const s=current()?.shots.find(x=>x.id===i.shotId);return s?{ok:true,shot:s}:{ok:false,reason:'shot_not_found'}}},
-{name:'rewrite_shot',title:'Rewrite a shot',description:'Update a visible shot.',inputSchema:schema({shotId:{type:'string'},action:{type:'string'},prompt:{type:'string'}},['shotId']),execute:i=>{const s=current()?.shots.find(x=>x.id===i.shotId);if(!s)return{ok:false,reason:'shot_not_found'};if(i.action)s.action=i.action;if(i.prompt)s.prompt=i.prompt;return write(project)}},
-{name:'reorder_shots',title:'Reorder shots',description:'Reorder every shot and rebuild coherent 5-second timecodes.',inputSchema:schema({orderedIds:{type:'array',items:{type:'string'}}},['orderedIds']),execute:i=>reorder(i.orderedIds||[])?{ok:true,project}:{ok:false,reason:'ordered_ids_must_match_all_shots'}},
-{name:'inspect_provider_availability',title:'Inspect provider availability',description:'Return truthful zero-spend capability.',inputSchema:schema({}),execute:()=>({ok:true,providers:[{provider:'prompt-only',enabled:true,mode:'prompt-only',reason:'safe deterministic fallback'},{provider:'external',enabled:false,mode:'prompt-only',reason:'credential/executor not verified'}]})},
-{name:'save_mv_project',title:'Save MV project',description:'Persist the shared project.',inputSchema:schema({}),execute:()=>current()?(persist(),{ok:true,projectId:project.id,storage:'localStorage'}):{ok:false,reason:'no_mv_project'}},
-{name:'render_or_prepare_video',title:'Render or prepare video',description:'Prepare without claiming fake completion.',inputSchema:schema({}),execute:()=>current()?{ok:true,status:'prompt_ready',projectId:project.id,reason:'No live provider credential/executor verified; prompt-only fallback'}:{ok:false,reason:'no_mv_project'}}];tools.forEach(t=>mc.registerTool(t));}
-render();register();
+import { createPlan, rewriteProjectShot, reorderProjectShots } from './logic.mjs';
+
+const KEY = 'akari-webmcp-mv-project-v2';
+const $ = (id) => document.getElementById(id);
+let project = readSavedProject();
+let registeredTools = [];
+
+function readSavedProject() {
+  try { return JSON.parse(localStorage.getItem(KEY) || 'null'); } catch { return null; }
+}
+
+function clone(value) {
+  return value == null ? value : JSON.parse(JSON.stringify(value));
+}
+
+function projectId() {
+  return globalThis.crypto?.randomUUID?.() || `mv-${Date.now()}`;
+}
+
+function saveProject(next, message = '') {
+  project = next;
+  localStorage.setItem(KEY, JSON.stringify(project));
+  render();
+  if (message) $('status').textContent = message;
+  return clone(project);
+}
+
+function readDataUrl(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result));
+    reader.onerror = () => reject(reader.error || new Error('file_read_failed'));
+    reader.readAsDataURL(file);
+  });
+}
+
+function hex(r, g, b) {
+  return `#${[r, g, b].map((v) => Math.max(0, Math.min(255, v)).toString(16).padStart(2, '0')).join('')}`;
+}
+
+// Extracted from the production PR #356 browser-local analyzer.
+async function analyzeImage(file) {
+  const original = await readDataUrl(file);
+  const img = new Image();
+  img.src = original;
+  await new Promise((resolve, reject) => {
+    img.onload = resolve;
+    img.onerror = () => reject(new Error('image_load_failed'));
+  });
+
+  const maxSide = 960;
+  const scale = Math.min(1, maxSide / Math.max(img.naturalWidth, img.naturalHeight));
+  const width = Math.max(1, Math.round(img.naturalWidth * scale));
+  const height = Math.max(1, Math.round(img.naturalHeight * scale));
+  const canvas = document.createElement('canvas');
+  canvas.width = width;
+  canvas.height = height;
+  const ctx = canvas.getContext('2d', { willReadFrequently: true });
+  if (!ctx) throw new Error('canvas_unavailable');
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(0, 0, width, height);
+  ctx.drawImage(img, 0, 0, width, height);
+
+  const pixels = ctx.getImageData(0, 0, width, height).data;
+  const buckets = new Map();
+  const luminances = [];
+  const stride = Math.max(4, Math.floor(Math.sqrt((width * height) / 12000))) * 4;
+  for (let i = 0; i < pixels.length; i += stride) {
+    if (pixels[i + 3] < 32) continue;
+    const r = pixels[i];
+    const g = pixels[i + 1];
+    const b = pixels[i + 2];
+    const lum = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+    luminances.push(lum);
+    if (lum > 245) continue;
+    const key = hex(Math.round(r / 51) * 51, Math.round(g / 51) * 51, Math.round(b / 51) * 51);
+    buckets.set(key, (buckets.get(key) || 0) + 1);
+  }
+
+  const avg = luminances.length ? luminances.reduce((a, b) => a + b, 0) / luminances.length : 128;
+  const variance = luminances.length ? luminances.reduce((sum, value) => sum + Math.pow(value - avg, 2), 0) / luminances.length : 0;
+  const brightness = Math.round((avg / 255) * 100);
+  const contrast = Math.min(100, Math.round((Math.sqrt(variance) / 96) * 100));
+  const palette = [...buckets.entries()].sort((a, b) => b[1] - a[1]).slice(0, 5).map(([color]) => color);
+  const ratio = width / height;
+  const orientation = ratio > 1.12 ? 'landscape' : ratio < 0.88 ? 'portrait' : 'square';
+  const emotionalTone = brightness < 38
+    ? 'dark, intimate and mysterious with small points of light'
+    : brightness > 72
+      ? 'bright, fragile and hopeful with airy negative space'
+      : contrast > 52
+        ? 'graphic, energetic and emotionally sharp'
+        : 'soft, nostalgic and slightly dreamlike';
+  const movement = orientation === 'portrait'
+    ? 'vertical rise, falling particles and close subject movement'
+    : orientation === 'landscape'
+      ? 'sideways parallax, environmental drift and cinematic camera travel'
+      : 'centered expansion, orbit and shape morphing';
+
+  return {
+    analysis: {
+      palette: palette.length ? palette : ['#d9d9d9', '#7c7c7c', '#232323'],
+      brightness,
+      contrast,
+      orientation,
+      movement,
+      emotionalTone,
+    },
+    dataUrl: canvas.toDataURL('image/jpeg', 0.84),
+  };
+}
+
+function render() {
+  $('projectTitle').textContent = project?.title || 'No project yet';
+  $('shots').innerHTML = project ? project.shots.map((shot) => `
+    <article class="shot" data-shot-id="${shot.id}">
+      <b>${shot.id} · ${shot.start.toFixed(1)}–${shot.end.toFixed(1)}s</b>
+      <p>${shot.action}</p>
+      <small>${shot.prompt}</small>
+    </article>`).join('') : '';
+
+  if (!project) {
+    $('analysis').textContent = 'Upload a doodle to begin.';
+    $('preview').hidden = true;
+    $('palette').innerHTML = '';
+    $('metrics').textContent = '';
+    return;
+  }
+
+  $('title').value = project.title;
+  $('mood').value = project.mood;
+  $('fileLabel').textContent = project.fileName;
+  $('preview').src = project.sourceImageDataUrl;
+  $('preview').hidden = false;
+  $('analysis').textContent = `${project.analysis.emotionalTone}. ${project.analysis.movement}.`;
+  $('metrics').textContent = `Brightness ${project.analysis.brightness}% · Contrast ${project.analysis.contrast}% · ${project.analysis.orientation}`;
+  $('palette').innerHTML = project.analysis.palette.map((color) => `<i title="${color}" style="background:${color}"></i>`).join('');
+}
+
+function regenerate(overrides = {}, source = 'human') {
+  if (!project) return { ok: false, reason: 'no_mv_project' };
+  const next = createPlan(project, overrides);
+  return { ok: true, project: saveProject(next, `${source} updated the same shared project.`) };
+}
+
+async function onFile(file) {
+  $('status').textContent = 'Reading pixels locally…';
+  const { analysis, dataUrl } = await analyzeImage(file);
+  const now = new Date().toISOString();
+  project = {
+    id: projectId(),
+    title: $('title').value.trim() || file.name.replace(/\.[^.]+$/, '') || 'Doodle MV',
+    mood: $('mood').value,
+    fileName: file.name,
+    sourceImageDataUrl: dataUrl,
+    analysis,
+    shots: [],
+    createdAt: now,
+    updatedAt: now,
+  };
+  saveProject(project);
+  regenerate({}, 'human');
+  $('status').textContent = 'Doodle analyzed locally. Human and agent now share this exact project.';
+}
+
+$('file').onchange = async (event) => {
+  const file = event.target.files?.[0];
+  if (!file) return;
+  try { await onFile(file); } catch (error) { $('status').textContent = `Analysis failed: ${error.message || error}`; }
+};
+
+$('create').onclick = () => {
+  if (!project) return;
+  regenerate({ title: $('title').value, mood: $('mood').value }, 'human');
+};
+$('save').onclick = () => project && saveProject(project, 'Saved to local project history.');
+$('prepare').onclick = () => {
+  $('status').textContent = project
+    ? 'prompt_ready · no paid provider credential/executor verified · no fake video claimed'
+    : 'Upload a doodle first.';
+};
+
+function schema(properties, required = []) {
+  return { type: 'object', properties, required, additionalProperties: false };
+}
+
+function buildTools() {
+  return [
+    {
+      name: 'read_current_mv_project',
+      title: 'Read current MV project',
+      description: 'Read the exact MV project currently visible to the human.',
+      inputSchema: schema({}),
+      execute: () => project ? { ok: true, project: clone(project) } : { ok: false, reason: 'no_mv_project' },
+    },
+    {
+      name: 'analyze_current_doodle',
+      title: 'Analyze current doodle',
+      description: 'Return image-derived local palette, brightness, contrast, orientation, movement and tone.',
+      inputSchema: schema({}),
+      execute: () => project ? { ok: true, fileName: project.fileName, analysis: clone(project.analysis) } : { ok: false, reason: 'no_mv_project' },
+    },
+    {
+      name: 'create_mv_plan',
+      title: 'Create MV plan',
+      description: 'Regenerate the shared visible 15-second plan using agent-supplied title/mood without DOM overwrite.',
+      inputSchema: schema({ title: { type: 'string' }, mood: { type: 'string' } }),
+      execute: (input = {}) => regenerate(input, 'agent'),
+    },
+    {
+      name: 'set_mood',
+      title: 'Set mood',
+      description: 'Change mood on the same human-visible project.',
+      inputSchema: schema({ mood: { type: 'string' } }, ['mood']),
+      execute: (input = {}) => regenerate({ mood: input.mood }, 'agent'),
+    },
+    {
+      name: 'propose_shot',
+      title: 'Propose a shot',
+      description: 'Read one current shot for human review.',
+      inputSchema: schema({ shotId: { type: 'string' } }, ['shotId']),
+      execute: (input = {}) => {
+        const shot = project?.shots.find((item) => item.id === input.shotId);
+        return shot ? { ok: true, shot: clone(shot) } : { ok: false, reason: 'shot_not_found' };
+      },
+    },
+    {
+      name: 'rewrite_shot',
+      title: 'Rewrite a shot',
+      description: 'Rewrite one shot in the same visible project.',
+      inputSchema: schema({ shotId: { type: 'string' }, action: { type: 'string' }, prompt: { type: 'string' } }, ['shotId']),
+      execute: (input = {}) => {
+        try { return { ok: true, project: saveProject(rewriteProjectShot(project, input), 'Agent rewrote a visible shot.') }; }
+        catch (error) { return { ok: false, reason: error.message }; }
+      },
+    },
+    {
+      name: 'reorder_shots',
+      title: 'Reorder shots',
+      description: 'Reorder all shots and rebuild coherent start/end timecodes.',
+      inputSchema: schema({ orderedIds: { type: 'array', items: { type: 'string' } } }, ['orderedIds']),
+      execute: (input = {}) => {
+        try { return { ok: true, project: saveProject(reorderProjectShots(project, input.orderedIds || []), 'Agent reordered shots and rebuilt timecodes.') }; }
+        catch (error) { return { ok: false, reason: error.message }; }
+      },
+    },
+    {
+      name: 'inspect_provider_availability',
+      title: 'Inspect provider availability',
+      description: 'Return truthful zero-spend provider state.',
+      inputSchema: schema({}),
+      execute: () => ({ ok: true, providers: [
+        { provider: 'prompt-only', enabled: true, mode: 'prompt-only', reason: 'safe deterministic fallback' },
+        { provider: 'external', enabled: false, mode: 'prompt-only', reason: 'credential/executor not verified' },
+      ] }),
+    },
+    {
+      name: 'save_mv_project',
+      title: 'Save MV project',
+      description: 'Persist the exact shared project to localStorage.',
+      inputSchema: schema({}),
+      execute: () => project ? (saveProject(project), { ok: true, projectId: project.id, storage: 'localStorage' }) : { ok: false, reason: 'no_mv_project' },
+    },
+    {
+      name: 'render_or_prepare_video',
+      title: 'Render or prepare video',
+      description: 'Prepare prompts without claiming unverified paid rendering.',
+      inputSchema: schema({}),
+      execute: () => project ? { ok: true, status: 'prompt_ready', projectId: project.id, reason: 'No live paid provider credential/executor verified.' } : { ok: false, reason: 'no_mv_project' },
+    },
+  ];
+}
+
+function registerWebMcp() {
+  const modelContext = document.modelContext;
+  if (!modelContext?.registerTool) {
+    $('webmcp').textContent = 'WebMCP unavailable in this browser; the human editor still works locally.';
+    return;
+  }
+  if (globalThis.__akariWebMcpRegistered) return;
+  registeredTools = buildTools();
+  registeredTools.forEach((tool) => modelContext.registerTool(tool));
+  globalThis.__akariWebMcpRegistered = true;
+  globalThis.__akariWebMcpTools = registeredTools;
+  $('webmcp').textContent = `WebMCP ready · ${registeredTools.length} structured tools registered via document.modelContext`;
+}
+
+// Test/evidence surface: the real tool objects, not a second implementation.
+globalThis.__akariMv = {
+  getProject: () => clone(project),
+  getTools: () => registeredTools.length ? registeredTools : buildTools(),
+  analyzeImage,
+};
+
+render();
+registerWebMcp();
