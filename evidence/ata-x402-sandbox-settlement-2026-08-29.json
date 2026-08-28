@@ -1,0 +1,39 @@
+{
+  "observedAt": "2026-08-28T21:59:43.229Z",
+  "observedAtJst": "2026-08-29T06:59:43.229+09:00",
+  "protocol": "x402",
+  "scheme": "exact",
+  "networkExecution": "pay.sh hosted Surfpool localnet",
+  "amount": {
+    "asset": "USDC",
+    "atomic": "1000",
+    "decimal": "0.001",
+    "synthetic": true
+  },
+  "payer": {
+    "address": "G3rtavieyCg5EbM3pvFtvPptyiVGYQj4hr5P9isztaBh",
+    "beforeAtomic": "100000000",
+    "afterAtomic": "99999000",
+    "deltaAtomic": "1000"
+  },
+  "recipient": {
+    "address": "4Qz9eUcb4uEqeSEvhUwawSFVvyHcTRthU68pMvxzUJUS",
+    "beforeAtomic": "0",
+    "afterAtomic": "1000",
+    "deltaAtomic": "1000"
+  },
+  "transaction": {
+    "signature": "5P7CmNW5A5Dvw4hkDH6MCwP2aLMAurwDqiJa7tEFdxG4SGA4gEBG4Cjm3NXg2aX1vJ6jW6SzbCLhKio9txFLPqMY",
+    "confirmationStatus": "confirmed",
+    "confirmations": 2,
+    "slot": 442702276,
+    "err": null
+  },
+  "progress": ["challenge", "signing", "paying", "paid"],
+  "result": {
+    "externalSandboxSettled": true,
+    "realEconomicSettlement": false,
+    "cashDelta": 0
+  },
+  "truthBoundary": "Surfpool uses synthetic SOL/USDC. This is external hosted-chain transaction evidence, not economic value transfer, revenue, or cash settlement."
+}
