@@ -14,6 +14,7 @@
 - [x] `SUBMISSION.md`
 - [x] `DEMO_SCRIPT.md`
 - [x] Node regression test
+- [x] Native registration awaits all `registerTool()` promises before reporting discovery
 - [ ] Live deployment bytes rechecked after final commit
 - [ ] WebMCP-capable browser: `document.modelContext.getTools()` verified on live deployment
 - [ ] Human→agent→human live shared-edit evidence recorded in Issue #1

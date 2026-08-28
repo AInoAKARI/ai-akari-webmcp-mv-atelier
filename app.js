@@ -180,6 +180,24 @@ $('prepare').onclick = () => {
     : 'Upload a doodle first.';
 };
 
+$('nativeProof').onclick = async () => {
+  if (!project) {
+    $('status').textContent = 'Upload a doodle before running the native mutation proof.';
+    return;
+  }
+  try {
+    const modelContext = document.modelContext;
+    const discovered = await modelContext.getTools();
+    const tool = discovered.find((item) => item.name === 'set_mood');
+    if (!tool || !modelContext.executeTool) throw new Error('native_set_mood_unavailable');
+    const mood = project.mood === 'uneasy' ? 'dream' : 'uneasy';
+    await modelContext.executeTool(tool, JSON.stringify({ mood }));
+    $('status').textContent = `Native WebMCP executed set_mood → ${mood}. The visible project and persisted state changed.`;
+  } catch (error) {
+    $('status').textContent = `Native WebMCP proof failed · ${error.message || error}`;
+  }
+};
+
 function schema(properties, required = []) {
   return { type: 'object', properties, required, additionalProperties: false };
 }
@@ -271,18 +289,26 @@ function buildTools() {
   ];
 }
 
-function registerWebMcp() {
+async function registerWebMcp() {
   const modelContext = document.modelContext;
   if (!modelContext?.registerTool) {
     $('webmcp').textContent = 'WebMCP unavailable in this browser; the human editor still works locally.';
     return;
   }
-  if (globalThis.__akariWebMcpRegistered) return;
+  if (globalThis.__akariWebMcpRegistration) return globalThis.__akariWebMcpRegistration;
   registeredTools = buildTools();
-  registeredTools.forEach((tool) => modelContext.registerTool(tool));
-  globalThis.__akariWebMcpRegistered = true;
   globalThis.__akariWebMcpTools = registeredTools;
-  $('webmcp').textContent = `WebMCP ready · ${registeredTools.length} structured tools registered via document.modelContext`;
+  globalThis.__akariWebMcpRegistration = (async () => {
+    await Promise.all(registeredTools.map((tool) => modelContext.registerTool(tool)));
+    const discovered = modelContext.getTools ? await modelContext.getTools() : [];
+    const names = discovered.map((tool) => tool.name);
+    globalThis.__akariWebMcpRegistered = true;
+    globalThis.__akariWebMcpDiscoveredTools = discovered;
+    $('nativeProof').hidden = !modelContext.executeTool || !names.includes('set_mood');
+    $('webmcp').textContent = `WebMCP ready · ${names.length}/${registeredTools.length} native tools discovered · ${names.join(', ')}`;
+    return discovered;
+  })();
+  return globalThis.__akariWebMcpRegistration;
 }
 
 // Test/evidence surface: the real tool objects, not a second implementation.
@@ -293,4 +319,7 @@ globalThis.__akariMv = {
 };
 
 render();
-registerWebMcp();
+registerWebMcp().catch((error) => {
+  $('webmcp').textContent = `WebMCP registration failed · ${error.message || error}`;
+  console.error(error);
+});
