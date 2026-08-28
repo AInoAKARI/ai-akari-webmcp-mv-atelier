@@ -316,15 +316,26 @@ async function runNativeProof() {
     if (!tool || !modelContext.executeTool) throw new Error('native_set_mood_unavailable');
     const mood = project.mood === 'uneasy' ? 'dream' : 'uneasy';
     const result = await modelContext.executeTool(tool, JSON.stringify({ mood }));
+    let parsedResult = result;
+    if (typeof result === 'string') {
+      try { parsedResult = JSON.parse(result); } catch { parsedResult = { raw: result }; }
+    }
+    const resultProject = parsedResult?.project || visibleProject();
+    const resultSummary = {
+      ok: parsedResult?.ok === true,
+      projectId: resultProject?.id,
+      mood: resultProject?.mood,
+      shotOrder: resultProject?.shots?.map((shot) => shot.id),
+      timecodes: resultProject?.shots?.map((shot) => [shot.start, shot.end]),
+    };
     globalThis.__akariLastNativeProof = {
       tool: tool.name,
       mood,
-      result,
+      result: resultSummary,
       project: visibleProject(),
       at: new Date().toISOString(),
     };
-    const resultText = typeof result === 'string' ? result : JSON.stringify(result);
-    $('nativeResult').textContent = tr('NATIVE_RESULT_OUTPUT', { tool: tool.name, result: resultText });
+    $('nativeResult').textContent = tr('NATIVE_RESULT_OUTPUT', { tool: tool.name, result: JSON.stringify(resultSummary) });
     $('nativeResult').hidden = false;
     setStatus('STATUS_NATIVE_RESULT', { mood: moodLabel(mood) });
     return globalThis.__akariLastNativeProof;
