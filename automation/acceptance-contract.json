@@ -16,7 +16,8 @@
     "mood": "[data-testid=\"mood-select\"]",
     "project": "[data-testid=\"project-title\"]",
     "shots": "[data-testid=\"shots\"]",
-    "operationStatus": "[data-testid=\"operation-status\"]"
+    "operationStatus": "[data-testid=\"operation-status\"]",
+    "nativeResult": "[data-testid=\"native-execute-result\"]"
   },
   "expectedToolIds": [
     "read_current_mv_project",

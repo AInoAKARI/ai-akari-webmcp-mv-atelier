@@ -43,6 +43,7 @@ export const SEMANTIC_TEXT = Object.freeze({
   STATUS_PROMPT_READY: { ja: 'prompt_ready · 有料providerのcredential/executorは未検証 · 偽の動画成功を主張しません', en: 'prompt_ready · no paid provider credential/executor verified · no fake video claimed' },
   STATUS_UPLOAD_FIRST: { ja: '先に落書きを読み込んでください。', en: 'Upload a doodle first.' },
   STATUS_NATIVE_RESULT: { ja: 'native WebMCPが set_mood → {mood} を実行しました。見えるプロジェクトと永続状態が変化しました。', en: 'Native WebMCP executed set_mood → {mood}. The visible project and persisted state changed.' },
+  NATIVE_RESULT_OUTPUT: { ja: 'native executeTool({tool}) result: {result}', en: 'native executeTool({tool}) result: {result}' },
   STATUS_NATIVE_FAILED: { ja: 'native WebMCP証明に失敗 · {error}', en: 'Native WebMCP proof failed · {error}' },
   STATUS_DEMO_FAILED: { ja: 'デモ落書き読込失敗 · {error}', en: 'Demo doodle load failed · {error}' },
   STATUS_AGENT_REWROTE: { ja: 'エージェントが見えるshotを書き換えました。', en: 'Agent rewrote a visible shot.' },

@@ -323,6 +323,9 @@ async function runNativeProof() {
       project: visibleProject(),
       at: new Date().toISOString(),
     };
+    const resultText = typeof result === 'string' ? result : JSON.stringify(result);
+    $('nativeResult').textContent = tr('NATIVE_RESULT_OUTPUT', { tool: tool.name, result: resultText });
+    $('nativeResult').hidden = false;
     setStatus('STATUS_NATIVE_RESULT', { mood: moodLabel(mood) });
     return globalThis.__akariLastNativeProof;
   } catch (error) {
