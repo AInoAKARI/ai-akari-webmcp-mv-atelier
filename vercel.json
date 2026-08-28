@@ -1,0 +1,7 @@
+{
+  "rewrites": [
+    { "source": "/.well-known/agent-card.json", "destination": "/api/a2a-agent-card" },
+    { "source": "/a2a/message:send", "destination": "/api/a2a-message-send" },
+    { "source": "/x402/discovery.json", "destination": "/api/x402-discovery" }
+  ]
+}
