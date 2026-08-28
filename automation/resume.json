@@ -1,11 +1,12 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-08-28T18:24:00+09:00",
+  "updated_at": "2026-08-28T18:30:00+09:00",
   "primary": "webmcp_challenge_submission",
   "machine_acceptance": "green",
   "production_commit": "e4b3215add3c01196ec54a1fb011c1172be1ccab",
   "production_url": "https://ai-akari-webmcp-mv-atelier.vercel.app",
   "demo_video_url": "https://ai-akari-webmcp-mv-atelier.vercel.app/demo/webmcp-demo.mp4",
+  "devpost_autofill": "automation/DEVPOST_AUTOFILL.json",
   "native_webmcp": {
     "chrome": 151,
     "discovery": "10/10",
@@ -24,16 +25,18 @@
       "Reuse the already signed-in Chrome session.",
       "Upload the committed 87-second H.264/AAC demo video to YouTube.",
       "Publish it publicly and capture the public YouTube URL.",
-      "Open Devpost, complete all machine-fillable registration/submission fields.",
-      "Use the public repo, production URL, demo URL and challenge artifacts from this repository.",
-      "Stop only for login/identity confirmation, rules consent, or final irreversible Submit if the current authenticated session cannot legally or technically complete those actions.",
+      "Read automation/DEVPOST_AUTOFILL.json.",
+      "Open Devpost and complete all safe machine-fillable registration/submission fields.",
+      "Use the public repo, production URL, YouTube URL and challenge artifacts from this repository.",
+      "Stop only for login/identity confirmation, rules consent, CAPTCHA, or final irreversible Submit if the current authenticated session cannot legally or technically complete those actions.",
       "Record the YouTube URL and Devpost submission state in Issue #1 and CHALLENGE_CHECKLIST.md."
     ]
   },
   "execution": {
     "status": "ready_for_browser_executor",
     "human_relay_required": false,
-    "resume_without_new_chat_prompt": true
+    "resume_without_new_chat_prompt": true,
+    "external_write_queue": "AInoAKARI/akari-command-center:data/external-write-queue/2026-08-28-webmcp-youtube-devpost-submit.json"
   },
   "truth_boundary": {
     "cash_delta": 0,
