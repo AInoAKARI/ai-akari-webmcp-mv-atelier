@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "updated_at": "2026-08-28T18:28:00+09:00",
+  "purpose": "Machine-fillable payload for the WebMCP Challenge Devpost submission. English is used here only because the official submission materials must be in English; the product UI source of truth remains semantic tokens with Japanese as the default locale for Japanese environments.",
+  "challenge": {
+    "name": "The WebMCP Challenge",
+    "deadline": "2026-09-03T13:00:00-07:00",
+    "official_rules_url": "https://webmcp.devpost.com/rules"
+  },
+  "project": {
+    "name": "AIﾉアカリ☆ MV Atelier",
+    "tagline": "One human doodle becomes a visible time-coded MV graph that a human and an agent edit together through WebMCP.",
+    "live_url": "https://ai-akari-webmcp-mv-atelier.vercel.app",
+    "repository_url": "https://github.com/AInoAKARI/ai-akari-webmcp-mv-atelier",
+    "youtube_url": null,
+    "license": "MIT",
+    "platform": "Web / Google Chrome 149+ with WebMCP testing enabled / ChatGPT in-app browser",
+    "technologies": ["WebMCP", "document.modelContext", "JavaScript", "HTML", "CSS", "Canvas API", "Vercel"]
+  },
+  "description_sections": {
+    "webmcp_fit": "Creative agents usually operate outside the artifact a human is actually looking at. AIﾉアカリ☆ MV Atelier uses WebMCP to expose the live creative project itself as structured tools, so the agent reads and mutates the same visible artifact instead of producing disconnected text elsewhere.",
+    "better_user_experience": "A person uploads one rough doodle and immediately sees the same image, local pixel analysis, mood and 15-second storyboard that the agent can read. The agent can change mood, rewrite one shot, reorder the timeline or rebuild the plan, and every change appears in the exact project the person sees. State persists across reloads, so control can pass back and forth without copying prompts between surfaces.",
+    "human_agent_together": "Before this, the human had to translate visual intent into a long prompt, move it between tools and manually reconcile the result with the current project. Here the human and agent share one project state. The human supplies the doodle and creative intent; the agent can inspect and make constrained structured edits; the human can immediately continue from those exact edits.",
+    "implementation": "The page registers ten structured tools through document.modelContext. Uploaded pixels are analyzed locally with Canvas to derive palette, brightness, contrast, orientation, emotional tone and movement. Human controls and WebMCP tools use the same persisted project object. reorder_shots rebuilds coherent 0–5, 5–10 and 10–15 second timecodes. Rendering fails closed to prompt_ready unless a verified provider is available, so judges need no secret or paid API."
+  },
+  "prior_vs_new": {
+    "prior": "Before Aug 25, 2026, the broader AIﾉアカリ☆ production site already had doodle upload, local visual analysis, MV planning, provider prompts and project persistence.",
+    "challenge_extension": "During the Challenge submission period, this standalone public project added the current WebMCP collaboration layer, ten structured document.modelContext tools, a shared human-agent mutation model, native Chrome WebMCP verification, semantic-token localization, public challenge documentation, automated browser acceptance evidence and a judgeable deployment."
+  },
+  "testing_instructions": [
+    "Open the live URL in ChatGPT's in-app browser, or Google Chrome 149+ with chrome://flags/#enable-webmcp-testing enabled.",
+    "Use the demo doodle or upload any doodle image and confirm the visible preview and image-derived metrics.",
+    "Confirm document.modelContext.getTools() exposes 10 tools.",
+    "Invoke read_current_mv_project, then set_mood with an agent-chosen value and confirm the visible mood changes to that exact value.",
+    "Invoke rewrite_shot and confirm the visible shot changes.",
+    "Invoke reorder_shots and confirm the order changes while timecodes remain 0–5, 5–10 and 10–15 seconds.",
+    "Reload and confirm the same project persists.",
+    "Invoke render_or_prepare_video; with no verified paid provider it should truthfully return prompt_ready."
+  ],
+  "verified_evidence": {
+    "chrome": 151,
+    "native_tool_discovery": "10/10",
+    "native_execute_tool": "set_mood",
+    "visible_mutation": "mood changed from dream to unsettling",
+    "reload_persistence": "green",
+    "locales_verified": ["ja", "en"],
+    "demo_duration_seconds": 87,
+    "demo_format": "1920x1080 H.264/AAC",
+    "issue_evidence": "https://github.com/AInoAKARI/ai-akari-webmcp-mv-atelier/issues/1"
+  },
+  "browser_executor": {
+    "fill_all_safe_fields": true,
+    "save_draft_when_possible": true,
+    "do_not_invent_personal_identity_fields": true,
+    "human_only_if_unavoidable": ["login or identity confirmation", "rules/terms consent", "CAPTCHA", "final irreversible Submit"],
+    "after_youtube_publish": "Replace project.youtube_url with the public YouTube watch URL, fill the Devpost video field, then save the draft and update Issue #1."
+  }
+}
