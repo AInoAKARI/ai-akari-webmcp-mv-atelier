@@ -15,23 +15,31 @@ export function createPlan(project, overrides = {}) {
   const title = typeof overrides.title === 'string' && overrides.title.trim() ? overrides.title.trim() : project.title;
   const mood = typeof overrides.mood === 'string' && overrides.mood.trim() ? overrides.mood.trim() : project.mood;
   const analysis = project.analysis;
-  const palette = analysis.palette.join(', ');
-  const orientationMove = analysis.movement;
+  const params = {
+    title,
+    mood,
+    palette: analysis.palette.join(', '),
+    orientation: analysis.orientation,
+    brightness: analysis.brightness,
+    contrast: analysis.contrast,
+    tone: analysis.tone,
+    movement: analysis.movement,
+  };
   const base = [
     {
       id: 'shot-1',
-      action: `The original doodle wakes without losing its imperfect outline. ${analysis.emotionalTone}.`,
-      prompt: `${title}; opening shot; ${mood} mood; preserve the uploaded doodle identity; palette ${palette}; ${orientationMove}; gentle reveal`,
+      action: { token: 'SHOT_1_ACTION', params },
+      prompt: { token: 'SHOT_1_PROMPT', params },
     },
     {
       id: 'shot-2',
-      action: `The camera follows the doodle through motion suggested by its ${analysis.orientation} composition.`,
-      prompt: `${title}; middle shot; ${mood} mood; brightness ${analysis.brightness}%; contrast ${analysis.contrast}%; palette ${palette}; ${orientationMove}; evolving hand-drawn forms`,
+      action: { token: 'SHOT_2_ACTION', params },
+      prompt: { token: 'SHOT_2_PROMPT', params },
     },
     {
       id: 'shot-3',
-      action: 'The changed scene returns to the first line so the human can recognize the same drawing at the end.',
-      prompt: `${title}; closing shot; ${mood} mood; return to original doodle silhouette; palette ${palette}; emotional closure; no text overlay`,
+      action: { token: 'SHOT_3_ACTION', params },
+      prompt: { token: 'SHOT_3_PROMPT', params },
     },
   ];
   return {
@@ -51,8 +59,8 @@ export function rewriteProjectShot(project, input = {}) {
     ...project,
     shots: project.shots.map((shot) => shot.id === shotId ? {
       ...shot,
-      action: typeof input.action === 'string' && input.action ? input.action : shot.action,
-      prompt: typeof input.prompt === 'string' && input.prompt ? input.prompt : shot.prompt,
+      action: typeof input.action === 'string' && input.action ? { text: input.action } : shot.action,
+      prompt: typeof input.prompt === 'string' && input.prompt ? { text: input.prompt } : shot.prompt,
     } : shot),
     updatedAt: new Date().toISOString(),
   };

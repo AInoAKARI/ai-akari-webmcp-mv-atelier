@@ -4,6 +4,10 @@
 
 One human doodle becomes a visible, time-coded 15-second MV project. The browser UI and WebMCP agent tools read and mutate **the same local project state**, so an agent edit is immediately visible to the human and the human can continue from it.
 
+## Language model
+
+UI copy is keyed by semantic tokens in `i18n.mjs`; neither Japanese nor English is treated as the source language. Japanese browsers default to Japanese, `?lang=ja` and `?lang=en` are deterministic judge routes, and the language selector persists its choice. WebMCP tool IDs remain stable machine identifiers while titles, descriptions and the visible discovery list use the active locale.
+
 ## Why WebMCP
 
 This is not a chatbot controlling buttons. The site exposes structured creative operations through the current WebMCP imperative API on `document.modelContext`. The shared object contains the doodle-derived visual analysis, title, mood, storyboard, prompts and persisted state.
@@ -21,6 +25,8 @@ await document.modelContext.getTools()
 The page waits for all asynchronous registrations, calls the native `getTools()` API, and shows the discovered count and names in its WebMCP status line. The UI continues to work locally when WebMCP is unavailable.
 
 After uploading a doodle, **Run native WebMCP proof** invokes the discovered `set_mood` tool through `document.modelContext.executeTool()`. The resulting mood change is visible and persists on reload.
+
+For repeatable zero-permission automation, **Load demo doodle** fetches the committed `demo/doodle.svg`, places it into the real file input with `DataTransfer`, and dispatches the same change event as a human upload. Stable selectors and the reusable browser lane are documented under `automation/`.
 
 Pure shared-state regression tests require only Node.js:
 

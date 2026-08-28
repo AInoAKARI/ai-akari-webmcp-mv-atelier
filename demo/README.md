@@ -3,7 +3,7 @@
 All assets are local and zero-spend.
 
 1. Enable `chrome://flags/#enable-webmcp-testing` in Chrome 149+ and relaunch.
-2. Open the live app, upload `demo/doodle.svg`, and create the plan.
+2. Open the live app and click **Load demo doodle**. This places `demo/doodle.svg` into the real file input without requiring extension file permissions.
 3. Keep the WebMCP `10/10` status line visible and click **Run native WebMCP proof**. Show the visible mood mutation, then reload to show persistence.
 4. Record the single browser window with Windows Snipping Tool screen recording. Use `captions.srt` and `narration.wav`; keep the final cut below 3 minutes.
 

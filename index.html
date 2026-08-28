@@ -1,58 +1,72 @@
 <!doctype html>
-<html lang="en">
+<html lang="">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="One doodle becomes a shared time-coded MV project that a human and WebMCP agent edit together.">
+  <meta name="description" content="">
   <title>AIﾉアカリ☆ MV Atelier</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <main>
-  <p class="eyebrow">AIﾉアカリ☆ / MV ATELIER / WEBMCP</p>
-  <h1>You are me, I am you.</h1>
-  <p class="intro">One human doodle becomes a visible 15-second MV graph. Human and agent read and mutate the same local project.</p>
-  <p id="webmcp" class="webmcp">Checking WebMCP…</p>
+  <div class="topline">
+    <p class="eyebrow">AIﾉアカリ☆ / MV ATELIER / WEBMCP</p>
+    <label class="language-picker">
+      <span data-i18n="LANGUAGE_LABEL"></span>
+      <select id="language" data-testid="language-switcher" data-i18n-aria-label="LANGUAGE_LABEL">
+        <option value="ja" data-i18n="LANG_JA"></option>
+        <option value="en" data-i18n="LANG_EN"></option>
+      </select>
+    </label>
+  </div>
+  <h1 data-i18n="RELATIONSHIP_CORE"></h1>
+  <p class="intro" data-i18n="INTRO"></p>
+  <p id="webmcp" class="webmcp" data-testid="webmcp-status" data-i18n="WEBMCP_CHECKING"></p>
+  <details id="toolDetails" hidden>
+    <summary data-i18n="TOOL_LIST_LABEL"></summary>
+    <ul id="toolList" class="tool-list" data-testid="native-tool-list"></ul>
+  </details>
 
   <section class="card">
     <label class="drop" id="drop">
-      <input id="file" type="file" accept="image/*">
-      <img id="preview" alt="Uploaded doodle shared by human and agent" hidden>
-      <span id="fileLabel">Choose a doodle image</span>
+      <input id="file" data-testid="doodle-file-input" type="file" accept="image/*">
+      <img id="preview" data-testid="doodle-preview" data-i18n-alt="PREVIEW_ALT" hidden>
+      <span id="fileLabel" data-i18n="CHOOSE_DOODLE"></span>
     </label>
     <div class="controls">
-      <input id="title" value="Doodle MV" aria-label="MV title">
-      <select id="mood" aria-label="Mood">
-        <option value="dream">Dream</option>
-        <option value="uneasy">Uneasy</option>
-        <option value="anime">Anime</option>
-        <option value="intense">Intense</option>
-        <option value="emotional">Emotional</option>
+      <input id="title" data-testid="mv-title" data-i18n-aria-label="MV_TITLE_LABEL">
+      <select id="mood" data-testid="mood-select" data-i18n-aria-label="MOOD_LABEL">
+        <option value="dream" data-i18n="MOOD_DREAM"></option>
+        <option value="uneasy" data-i18n="MOOD_UNEASY"></option>
+        <option value="anime" data-i18n="MOOD_ANIME"></option>
+        <option value="intense" data-i18n="MOOD_INTENSE"></option>
+        <option value="emotional" data-i18n="MOOD_EMOTIONAL"></option>
       </select>
-      <button id="create">Create 15s plan</button>
+      <button id="create" data-i18n="CREATE_PLAN"></button>
+      <button id="loadDemo" data-testid="load-demo-doodle" class="secondary" data-i18n="LOAD_DEMO"></button>
     </div>
   </section>
 
   <section class="card">
-    <p class="eyebrow">SHARED SOURCE</p>
-    <h2 id="projectTitle">No project yet</h2>
-    <p id="analysis">Upload a doodle to begin.</p>
-    <div id="palette" class="palette" aria-label="Image palette"></div>
-    <p id="metrics" class="metrics"></p>
+    <p class="eyebrow" data-i18n="SHARED_SOURCE"></p>
+    <h2 id="projectTitle" data-testid="project-title"></h2>
+    <p id="analysis" data-testid="analysis"></p>
+    <div id="palette" class="palette" data-i18n-aria-label="IMAGE_PALETTE"></div>
+    <p id="metrics" class="metrics" data-testid="metrics"></p>
   </section>
 
   <section class="card">
-    <p class="eyebrow">VISIBLE TIME GRAPH</p>
-    <div id="shots" class="shots"></div>
+    <p class="eyebrow" data-i18n="VISIBLE_TIME_GRAPH"></p>
+    <div id="shots" class="shots" data-testid="shots"></div>
     <div class="actions">
-      <button id="save">Save project</button>
-      <button id="prepare">Prepare video</button>
-      <button id="nativeProof" hidden>Run native WebMCP proof</button>
+      <button id="save" data-i18n="SAVE_PROJECT"></button>
+      <button id="prepare" data-i18n="PREPARE_VIDEO"></button>
+      <button id="nativeProof" data-testid="native-webmcp-proof" data-i18n="RUN_NATIVE_PROOF" hidden></button>
     </div>
-    <pre id="status" aria-live="polite"></pre>
+    <pre id="status" data-testid="operation-status" aria-live="polite"></pre>
   </section>
 
-  <p class="foot">Pixel analysis is browser-local and zero-spend. No uploaded doodle is sent to a paid provider. When no verified video executor exists, the project stops truthfully at <code>prompt_ready</code>.</p>
+  <p class="foot" data-i18n="FOOT"></p>
 </main>
 <script type="module" src="app.js"></script>
 </body>

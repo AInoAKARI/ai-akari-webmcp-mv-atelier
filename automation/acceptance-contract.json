@@ -1,0 +1,33 @@
+{
+  "browserFamily": "chrome",
+  "minimumChromeMajor": 149,
+  "requiredFlag": "chrome://flags/#enable-webmcp-testing",
+  "productionUrl": "https://ai-akari-webmcp-mv-atelier.vercel.app",
+  "locales": {
+    "ja": "?lang=ja",
+    "en": "?lang=en"
+  },
+  "selectors": {
+    "language": "[data-testid=\"language-switcher\"]",
+    "loadDemo": "[data-testid=\"load-demo-doodle\"]",
+    "discoveryStatus": "[data-testid=\"webmcp-status\"]",
+    "toolList": "[data-testid=\"native-tool-list\"]",
+    "nativeProof": "[data-testid=\"native-webmcp-proof\"]",
+    "mood": "[data-testid=\"mood-select\"]",
+    "project": "[data-testid=\"project-title\"]",
+    "shots": "[data-testid=\"shots\"]",
+    "operationStatus": "[data-testid=\"operation-status\"]"
+  },
+  "expectedToolIds": [
+    "read_current_mv_project",
+    "analyze_current_doodle",
+    "create_mv_plan",
+    "set_mood",
+    "propose_shot",
+    "rewrite_shot",
+    "reorder_shots",
+    "inspect_provider_availability",
+    "save_mv_project",
+    "render_or_prepare_video"
+  ]
+}
