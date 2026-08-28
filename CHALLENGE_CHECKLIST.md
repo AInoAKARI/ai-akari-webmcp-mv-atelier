@@ -26,6 +26,7 @@
 - [x] Devpost machine-fillable payload committed as `automation/DEVPOST_AUTOFILL.json`
 
 ## Automatic submission lane — do not return these as human copy/paste work
+- [x] 2026-08-28 local Chrome executor reached the browser security boundary; YouTube Studio navigation was permission-rejected before upload and the failure was recorded without workaround
 - [ ] Publish the existing demo publicly on YouTube through the first browser-capable authenticated executor
 - [ ] Capture and persist the public YouTube URL
 - [ ] Fill/save all safe machine-fillable Devpost fields from `automation/DEVPOST_AUTOFILL.json`
