@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "updated_at": "2026-08-28T18:21:00+09:00",
+  "primary": "webmcp_challenge_submission",
+  "machine_acceptance": "green",
+  "production_commit": "e4b3215add3c01196ec54a1fb011c1172be1ccab",
+  "production_url": "https://ai-akari-webmcp-mv-atelier.vercel.app",
+  "demo_video_url": "https://ai-akari-webmcp-mv-atelier.vercel.app/demo/webmcp-demo.mp4",
+  "native_webmcp": {
+    "chrome": 151,
+    "discovery": "10/10",
+    "execute_tool": "set_mood",
+    "visible_mutation": "dream_to_unsettling",
+    "persistence": "green"
+  },
+  "next": {
+    "human_gate": {
+      "required": true,
+      "reason": "ChatGPT Chrome extension currently cannot attach a local file to YouTube Studio until Chrome extension file-URL access is enabled.",
+      "single_action": "Enable Allow access to file URLs for the ChatGPT browser extension in chrome://extensions.",
+      "do_not_ask_for": ["copy-paste instructions", "repo selection", "file path", "cookies", "tokens"]
+    },
+    "automatic_after_gate": [
+      "Reuse the already signed-in Chrome session.",
+      "Upload the committed 87-second H.264/AAC demo video to YouTube.",
+      "Publish it publicly and capture the public YouTube URL.",
+      "Open Devpost, complete all machine-fillable registration/submission fields.",
+      "Use the public repo, production URL, demo URL and challenge artifacts from this repository.",
+      "Stop only for login/identity confirmation, rules consent, or final irreversible Submit if the current authenticated session cannot legally or technically complete those actions.",
+      "Record the YouTube URL and Devpost submission state in Issue #1 and CHALLENGE_CHECKLIST.md."
+    ]
+  },
+  "truth_boundary": {
+    "cash_delta": 0,
+    "do_not_count_as_revenue": ["commit", "deploy", "demo_video_created", "youtube_upload", "devpost_draft"]
+  }
+}
