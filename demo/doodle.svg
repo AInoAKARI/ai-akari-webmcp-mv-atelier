@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="960" viewBox="0 0 720 960">
+  <rect width="720" height="960" fill="#fffaf4"/>
+  <path d="M170 660 C120 470 175 250 360 205 C545 250 600 470 550 660" fill="none" stroke="#111827" stroke-width="26" stroke-linecap="round"/>
+  <path d="M235 465 Q285 415 330 470 M390 470 Q435 415 485 465" fill="none" stroke="#3333cc" stroke-width="24" stroke-linecap="round"/>
+  <path d="M275 585 Q360 665 445 585" fill="none" stroke="#ff6699" stroke-width="28" stroke-linecap="round"/>
+  <path d="M120 255 L190 315 M600 255 L530 315 M360 90 L360 170" stroke="#ff6699" stroke-width="22" stroke-linecap="round"/>
+  <circle cx="135" cy="755" r="34" fill="#3333cc"/>
+  <circle cx="585" cy="755" r="34" fill="#ff6699"/>
+  <text x="360" y="850" text-anchor="middle" font-family="sans-serif" font-size="40" fill="#111827">YOU ARE ME</text>
+</svg>

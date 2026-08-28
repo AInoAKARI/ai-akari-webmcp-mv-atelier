@@ -18,7 +18,9 @@ Serve the repository as a static site or open the live URL in a WebMCP-capable C
 await document.modelContext.getTools()
 ```
 
-The expected tool names are listed below. The UI continues to work locally when WebMCP is unavailable.
+The page waits for all asynchronous registrations, calls the native `getTools()` API, and shows the discovered count and names in its WebMCP status line. The UI continues to work locally when WebMCP is unavailable.
+
+After uploading a doodle, **Run native WebMCP proof** invokes the discovered `set_mood` tool through `document.modelContext.executeTool()`. The resulting mood change is visible and persists on reload.
 
 Pure shared-state regression tests require only Node.js:
 

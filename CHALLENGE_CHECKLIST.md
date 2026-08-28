@@ -14,6 +14,7 @@
 - [x] `SUBMISSION.md`
 - [x] `DEMO_SCRIPT.md`
 - [x] Node regression test
+- [x] Native registration awaits all `registerTool()` promises before reporting discovery
 - [x] Vercel production deployment is READY and live `app.js` bytes were rechecked after the implementation commit
 - [x] Human→agent→human shared-edit E2E executed against the exact committed implementation with a `document.modelContext` contract shim; evidence recorded in Issue #1
 - [ ] Native WebMCP-capable Chrome 150+: `document.modelContext.getTools()` verified on the live URL (current independent verifier only has Chromium 144, so this must not be falsely marked complete)

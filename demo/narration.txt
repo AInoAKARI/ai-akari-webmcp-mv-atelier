@@ -1,0 +1,15 @@
+Most creative agents make humans translate an image into prompts, then work somewhere else. AI no Akari MV Atelier keeps one artifact between us: one doodle, one project, one visible timeline.
+
+I upload a doodle. Its real pixels are analyzed locally in the browser, producing a palette, brightness, contrast, orientation, emotional tone and movement. Nothing here needs a paid vision model.
+
+The page does not ask an agent to guess at buttons. Native WebMCP discovers ten structured creative tools directly from document model context.
+
+Now I run the discovered set mood tool through the browser's native execute tool API. The human-visible mood and storyboard change immediately because the agent and the page operate on exactly the same project state.
+
+The agent can also rewrite one shot and reorder the timeline. Structural edits rebuild zero-to-five, five-to-ten and ten-to-fifteen second timecodes, so the result remains coherent for a human editor.
+
+Saving and reloading preserves the exact project. Control can pass back to the human without copying prompts or recreating context.
+
+There is no hidden paid rendering claim. When no verified executor exists, the project stops truthfully at prompt ready.
+
+You are me, I am you: not because the agent imitates the human, but because both collaborators take turns shaping one visible artifact.
