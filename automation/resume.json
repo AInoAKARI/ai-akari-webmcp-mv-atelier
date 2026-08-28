@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-08-28T18:30:00+09:00",
+  "updated_at": "2026-08-28T23:50:00+09:00",
   "primary": "webmcp_challenge_submission",
   "machine_acceptance": "green",
   "production_commit": "e4b3215add3c01196ec54a1fb011c1172be1ccab",
@@ -33,10 +33,16 @@
     ]
   },
   "execution": {
-    "status": "ready_for_browser_executor",
+    "status": "browser_permission_blocked",
     "human_relay_required": false,
     "resume_without_new_chat_prompt": true,
-    "external_write_queue": "AInoAKARI/akari-command-center:data/external-write-queue/2026-08-28-webmcp-youtube-devpost-submit.json"
+    "external_write_queue": "AInoAKARI/akari-command-center:data/external-write-queue/2026-08-28-webmcp-youtube-devpost-submit.json",
+    "last_attempt": {
+      "at": "2026-08-28T23:46:00+09:00",
+      "executor": "local Codex Chrome extension",
+      "result": "YouTube Studio navigation rejected by the browser security permission layer before upload; no upload or Devpost mutation occurred.",
+      "retry_rule": "Do not route around the rejected browser permission. Resume only when the Chrome browser surface explicitly permits studio.youtube.com, then continue YouTube before Devpost."
+    }
   },
   "truth_boundary": {
     "cash_delta": 0,
