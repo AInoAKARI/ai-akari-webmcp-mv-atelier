@@ -3,7 +3,6 @@
   "private": true,
   "type": "module",
   "dependencies": {
-    "@solana/kit": "6.10.0",
     "@solana/pay-kit": "0.9.0"
   }
 }
