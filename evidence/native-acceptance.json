@@ -1,0 +1,59 @@
+{
+  "capturedAt": "2026-08-28T18:00:17+09:00",
+  "chrome": {
+    "version": "151.0.7922.174",
+    "webmcpTestingEnabled": true
+  },
+  "production": {
+    "url": "https://ai-akari-webmcp-mv-atelier.vercel.app",
+    "deploymentId": "dpl_FxfZMccjywdGde6MH3xJAv8wToQQ",
+    "commit": "d437696c84536d6ee2412ea2dbfaaa461330f5f1",
+    "appJsHttp": 200,
+    "appJsBytes": 18715,
+    "appJsSha256": "8FB835D0FB38E0F6064E67A46A84BDD73A9C60BAA01D9139DFBAE6203CB739FB",
+    "matchesLocal": true
+  },
+  "discovery": {
+    "api": "document.modelContext.getTools()",
+    "count": 10,
+    "expected": 10,
+    "toolIds": [
+      "analyze_current_doodle",
+      "create_mv_plan",
+      "inspect_provider_availability",
+      "propose_shot",
+      "read_current_mv_project",
+      "render_or_prepare_video",
+      "reorder_shots",
+      "rewrite_shot",
+      "save_mv_project",
+      "set_mood"
+    ]
+  },
+  "nativeExecution": {
+    "api": "document.modelContext.executeTool()",
+    "tool": "set_mood",
+    "ok": true,
+    "projectId": "04ab2667-e2f5-4d07-818e-36ceb47b7498",
+    "moodBefore": "dream",
+    "moodAfter": "uneasy",
+    "shotOrder": ["shot-1", "shot-2", "shot-3"],
+    "timecodes": [[0, 5], [5, 10], [10, 15]],
+    "visibleOperationStatus": "native WebMCPが set_mood → 不穏 を実行しました。見えるプロジェクトと永続状態が変化しました。"
+  },
+  "persistenceAfterReload": {
+    "projectTitle": "落書きMV",
+    "mood": "uneasy",
+    "previewVisible": true,
+    "shotOrder": ["shot-1", "shot-2", "shot-3"],
+    "timecodes": [[0, 5], [5, 10], [10, 15]],
+    "nativeToolCount": 10
+  },
+  "localization": {
+    "japaneseBrowserDefault": true,
+    "jaUrl": "https://ai-akari-webmcp-mv-atelier.vercel.app/?lang=ja",
+    "enUrl": "https://ai-akari-webmcp-mv-atelier.vercel.app/?lang=en",
+    "jaNativeToolCount": 10,
+    "enNativeToolCount": 10
+  }
+}

@@ -17,7 +17,10 @@
 - [x] Native registration awaits all `registerTool()` promises before reporting discovery
 - [x] Vercel production deployment is READY and live `app.js` bytes were rechecked after the implementation commit
 - [x] Human→agent→human shared-edit E2E executed against the exact committed implementation with a `document.modelContext` contract shim; evidence recorded in Issue #1
-- [ ] Native WebMCP-capable Chrome 150+: `document.modelContext.getTools()` verified on the live URL (current independent verifier only has Chromium 144, so this must not be falsely marked complete)
+- [x] Native Chrome 151: live `document.modelContext.getTools()` discovered all 10 tools
+- [x] Native `executeTool(set_mood)` visibly mutated the shared UI and persisted after reload
+- [x] Japanese browser default plus deterministic `?lang=ja` / `?lang=en` judge routes
+- [x] Native acceptance JSON, Markdown and PNG evidence committed under `evidence/`
 
 ## Human gate — only after machine acceptance is green
 - [ ] Confirm entrant eligibility and accept current Official Rules in Devpost
