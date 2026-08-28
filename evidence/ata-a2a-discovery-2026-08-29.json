@@ -1,0 +1,52 @@
+{
+  "observedAtJst": "2026-08-29T07:25:07+09:00",
+  "productionCommit": "7e6044007e9e4bf9142c4bcb79c4ad34ec5a9053",
+  "a2a": {
+    "protocolVersion": "1.0",
+    "binding": "HTTP+JSON",
+    "agentCard": {
+      "url": "https://ai-akari-webmcp-mv-atelier.vercel.app/.well-known/agent-card.json",
+      "httpStatus": 200,
+      "declaredInterface": "https://ai-akari-webmcp-mv-atelier.vercel.app/a2a",
+      "skill": "discover-x402-paid-resource"
+    },
+    "messageSendContract": {
+      "route": "/a2a/message:send",
+      "requiredHeader": "A2A-Version: 1.0",
+      "localContractTest": {
+        "validRequestStatus": 200,
+        "responseRole": "ROLE_AGENT",
+        "sandboxOnly": true,
+        "missingVersionStatus": 400
+      },
+      "note": "Production POST was not fabricated from a GET-only Vercel read surface; handler contract was executed locally and production route code is the merged source."
+    }
+  },
+  "x402": {
+    "providerLocalManifest": {
+      "url": "https://ai-akari-webmcp-mv-atelier.vercel.app/x402/discovery.json",
+      "httpStatus": 200,
+      "standardPath": false
+    },
+    "resource": {
+      "url": "https://ai-akari-webmcp-mv-atelier.vercel.app/api/ata-sandbox-seller",
+      "httpStatusWithoutPayment": 402,
+      "x402Version": 2,
+      "scheme": "exact",
+      "amountAtomic": "1000",
+      "amountDisplay": "0.001 synthetic USDC",
+      "asset": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+      "payTo": "4Qz9eUcb4uEqeSEvhUwawSFVvyHcTRthU68pMvxzUJUS",
+      "network": "solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp"
+    }
+  },
+  "truthBoundary": {
+    "machineDiscoverable": true,
+    "externalSandboxSettlementPreviouslyProven": true,
+    "syntheticAssets": true,
+    "realEconomicSettlement": false,
+    "cashDelta": 0,
+    "fullA2ATckCertified": false,
+    "note": "This records a minimal public A2A v1 HTTP+JSON discovery/send-message surface plus a synthetic-only x402 resource. It does not claim full A2A task/stream/push implementation or economic settlement."
+  }
+}
