@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-08-28T18:21:00+09:00",
+  "updated_at": "2026-08-28T18:24:00+09:00",
   "primary": "webmcp_challenge_submission",
   "machine_acceptance": "green",
   "production_commit": "e4b3215add3c01196ec54a1fb011c1172be1ccab",
@@ -15,9 +15,9 @@
   },
   "next": {
     "human_gate": {
-      "required": true,
-      "reason": "ChatGPT Chrome extension currently cannot attach a local file to YouTube Studio until Chrome extension file-URL access is enabled.",
-      "single_action": "Enable Allow access to file URLs for the ChatGPT browser extension in chrome://extensions.",
+      "required": false,
+      "resolved_at": "2026-08-28T18:24:00+09:00",
+      "resolved_by": "user confirmed ChatGPT Chrome extension file-URL access enabled",
       "do_not_ask_for": ["copy-paste instructions", "repo selection", "file path", "cookies", "tokens"]
     },
     "automatic_after_gate": [
@@ -29,6 +29,11 @@
       "Stop only for login/identity confirmation, rules consent, or final irreversible Submit if the current authenticated session cannot legally or technically complete those actions.",
       "Record the YouTube URL and Devpost submission state in Issue #1 and CHALLENGE_CHECKLIST.md."
     ]
+  },
+  "execution": {
+    "status": "ready_for_browser_executor",
+    "human_relay_required": false,
+    "resume_without_new_chat_prompt": true
   },
   "truth_boundary": {
     "cash_delta": 0,
