@@ -8,3 +8,7 @@ All assets are local and zero-spend.
 4. Record the single browser window with Windows Snipping Tool screen recording. Use `captions.srt` and `narration.wav`; keep the final cut below 3 minutes.
 
 The proof button uses native `getTools()` and `executeTool()`; it does not call the application mutation function directly.
+
+## Generated artifact
+
+`webmcp-demo.mp4` is an 87-second, 1920×1080 H.264/AAC public-demo candidate with local English narration. It is generated from the committed native acceptance screenshots by `build-video.ps1`; no paid service is involved. `youtube-metadata.md` contains the prepared public title and description.

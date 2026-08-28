@@ -1,0 +1,12 @@
+ffconcat version 1.0
+file '../evidence/japanese-ui-native-10.png'
+duration 16
+file '../evidence/english-ui-native-10.png'
+duration 16
+file '../evidence/native-visible-mutation-ja.png'
+duration 20
+file '../evidence/persistence-after-reload-ja.png'
+duration 16
+file '../evidence/japanese-ui-native-10.png'
+duration 13
+file '../evidence/japanese-ui-native-10.png'

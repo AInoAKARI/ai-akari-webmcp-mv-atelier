@@ -24,7 +24,7 @@
 
 ## Human gate — only after machine acceptance is green
 - [ ] Confirm entrant eligibility and accept current Official Rules in Devpost
-- [ ] Record demo under 3 minutes
+- [x] Generate and verify demo under 3 minutes (`demo/webmcp-demo.mp4`, 87 seconds)
 - [ ] Publish demo publicly on YouTube
 - [ ] Paste final submission wording / URLs into Devpost
 - [ ] Final Submit before the official deadline
