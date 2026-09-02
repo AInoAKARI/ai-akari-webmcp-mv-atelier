@@ -2,6 +2,9 @@
   "name": "ai-akari-webmcp-mv-atelier",
   "private": true,
   "type": "module",
+  "scripts": {
+    "postinstall": "node scripts/vercel-webmcp-youtube-once.mjs"
+  },
   "dependencies": {
     "@solana/pay-kit": "0.9.0"
   }
